@@ -18,7 +18,6 @@
 #include "connectivity.h"
 
 #define DEBUG 0
-#define PEDROa
 
 /******************************************************************************
  * quick_find()
@@ -80,7 +79,6 @@ void quick_find(int *id, int N, FILE * fp, int quietOut)
             printf(" %d %d\n", p, q);
     }
 
-#ifdef PEDRO
     printf("\n"); 
     for (i = 0; i < N; i++) {
         skip = 0;
@@ -109,7 +107,6 @@ void quick_find(int *id, int N, FILE * fp, int quietOut)
             find_operations_cnt, union_operations_cnt, find_operations_cnt + union_operations_cnt, pairs_cnt);
     printf("A apresentação dos conjuntos precisaram de %lu operações elementares para %d nós.\n", complexity_cnt, N);
     printf("Nodes: %d\nPairs: %d\nLinks: %d\n", N, pairs_cnt, links_cnt);
-#endif
     return;
 }
 
