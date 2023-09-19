@@ -1,0 +1,90 @@
+File: zx/z100000.txt
+QU: The number of links performed is 83744 for 100000 input pairs.
+QU: The number of elementary operations is 455314802 when searching, 83744 when perfoming union, with a total of 455398546 operations for 100000 input pairs.
+Nodes: 100000
+Pairs: 100000
+Links: 83744
+File: zx/z10000.txt
+QU: The number of links performed is 8361 for 10000 input pairs.
+QU: The number of elementary operations is 4694274 when searching, 8361 when perfoming union, with a total of 4702635 operations for 10000 input pairs.
+Nodes: 10000
+Pairs: 10000
+Links: 8361
+File: zx/z1000.txt
+QU: The number of links performed is 835 for 1000 input pairs.
+QU: The number of elementary operations is 55860 when searching, 835 when perfoming union, with a total of 56695 operations for 1000 input pairs.
+Nodes: 1000
+Pairs: 1000
+Links: 835
+File: zx/z100.txt
+QU: The number of links performed is 86 for 100 input pairs.
+QU: The number of elementary operations is 832 when searching, 86 when perfoming union, with a total of 918 operations for 100 input pairs.
+Nodes: 100
+Pairs: 100
+Links: 86
+File: zx/z10.txt
+QU: The number of links performed is 8 for 10 input pairs.
+QU: The number of elementary operations is 30 when searching, 8 when perfoming union, with a total of 38 operations for 10 input pairs.
+Nodes: 10
+Pairs: 10
+Links: 8
+File: zx/z200000.txt
+QU: The number of links performed is 167760 for 200000 input pairs.
+QU: The number of elementary operations is 1769417466 when searching, 167760 when perfoming union, with a total of 1769585226 operations for 200000 input pairs.
+Nodes: 200000
+Pairs: 200000
+Links: 167760
+File: zx/z20000.txt
+QU: The number of links performed is 16794 for 20000 input pairs.
+QU: The number of elementary operations is 17944988 when searching, 16794 when perfoming union, with a total of 17961782 operations for 20000 input pairs.
+Nodes: 20000
+Pairs: 20000
+Links: 16794
+File: zx/z2000.txt
+QU: The number of links performed is 1684 for 2000 input pairs.
+QU: The number of elementary operations is 216398 when searching, 1684 when perfoming union, with a total of 218082 operations for 2000 input pairs.
+Nodes: 2000
+Pairs: 2000
+Links: 1684
+File: zx/z200.txt
+QU: The number of links performed is 170 for 200 input pairs.
+QU: The number of elementary operations is 3046 when searching, 170 when perfoming union, with a total of 3216 operations for 200 input pairs.
+Nodes: 200
+Pairs: 200
+Links: 170
+File: zx/z20.txt
+QU: The number of links performed is 16 for 20 input pairs.
+QU: The number of elementary operations is 98 when searching, 16 when perfoming union, with a total of 114 operations for 20 input pairs.
+Nodes: 20
+Pairs: 20
+Links: 16
+File: zx/z500000.txt
+QU: The number of links performed is 419003 for 500000 input pairs.
+QU: The number of elementary operations is 11001891148 when searching, 419003 when perfoming union, with a total of 11002310151 operations for 500000 input pairs.
+Nodes: 500000
+Pairs: 500000
+Links: 419003
+File: zx/z50000.txt
+QU: The number of links performed is 41812 for 50000 input pairs.
+QU: The number of elementary operations is 107105824 when searching, 41812 when perfoming union, with a total of 107147636 operations for 50000 input pairs.
+Nodes: 50000
+Pairs: 50000
+Links: 41812
+File: zx/z5000.txt
+QU: The number of links performed is 4203 for 5000 input pairs.
+QU: The number of elementary operations is 1089678 when searching, 4203 when perfoming union, with a total of 1093881 operations for 5000 input pairs.
+Nodes: 5000
+Pairs: 5000
+Links: 4203
+File: zx/z500.txt
+QU: The number of links performed is 417 for 500 input pairs.
+QU: The number of elementary operations is 12692 when searching, 417 when perfoming union, with a total of 13109 operations for 500 input pairs.
+Nodes: 500
+Pairs: 500
+Links: 417
+File: zx/z50.txt
+QU: The number of links performed is 41 for 50 input pairs.
+QU: The number of elementary operations is 350 when searching, 41 when perfoming union, with a total of 391 operations for 50 input pairs.
+Nodes: 50
+Pairs: 50
+Links: 41

@@ -1,0 +1,90 @@
+File: zx/z100000.txt
+WQU: The number of links performed is 83744 for 100000 input pairs.
+WQU: The number of elementary operation is 361102 when serching, 502464 when performing union, with a total of 863566 operations for 100000 input pairs.
+Nodes: 100000
+Pairs: 100000
+Links: 83744
+File: zx/z10000.txt
+WQU: The number of links performed is 8361 for 10000 input pairs.
+WQU: The number of elementary operation is 34918 when serching, 50166 when performing union, with a total of 85084 operations for 10000 input pairs.
+Nodes: 10000
+Pairs: 10000
+Links: 8361
+File: zx/z1000.txt
+WQU: The number of links performed is 835 for 1000 input pairs.
+WQU: The number of elementary operation is 3232 when serching, 5010 when performing union, with a total of 8242 operations for 1000 input pairs.
+Nodes: 1000
+Pairs: 1000
+Links: 835
+File: zx/z100.txt
+WQU: The number of links performed is 86 for 100 input pairs.
+WQU: The number of elementary operation is 250 when serching, 516 when performing union, with a total of 766 operations for 100 input pairs.
+Nodes: 100
+Pairs: 100
+Links: 86
+File: zx/z10.txt
+WQU: The number of links performed is 8 for 10 input pairs.
+WQU: The number of elementary operation is 16 when serching, 48 when performing union, with a total of 64 operations for 10 input pairs.
+Nodes: 10
+Pairs: 10
+Links: 8
+File: zx/z200000.txt
+WQU: The number of links performed is 167760 for 200000 input pairs.
+WQU: The number of elementary operation is 725134 when serching, 1006560 when performing union, with a total of 1731694 operations for 200000 input pairs.
+Nodes: 200000
+Pairs: 200000
+Links: 167760
+File: zx/z20000.txt
+WQU: The number of links performed is 16794 for 20000 input pairs.
+WQU: The number of elementary operation is 69542 when serching, 100764 when performing union, with a total of 170306 operations for 20000 input pairs.
+Nodes: 20000
+Pairs: 20000
+Links: 16794
+File: zx/z2000.txt
+WQU: The number of links performed is 1684 for 2000 input pairs.
+WQU: The number of elementary operation is 6928 when serching, 10104 when performing union, with a total of 17032 operations for 2000 input pairs.
+Nodes: 2000
+Pairs: 2000
+Links: 1684
+File: zx/z200.txt
+WQU: The number of links performed is 170 for 200 input pairs.
+WQU: The number of elementary operation is 524 when serching, 1020 when performing union, with a total of 1544 operations for 200 input pairs.
+Nodes: 200
+Pairs: 200
+Links: 170
+File: zx/z20.txt
+WQU: The number of links performed is 16 for 20 input pairs.
+WQU: The number of elementary operation is 38 when serching, 96 when performing union, with a total of 134 operations for 20 input pairs.
+Nodes: 20
+Pairs: 20
+Links: 16
+File: zx/z500000.txt
+WQU: The number of links performed is 419003 for 500000 input pairs.
+WQU: The number of elementary operation is 1804546 when serching, 2514018 when performing union, with a total of 4318564 operations for 500000 input pairs.
+Nodes: 500000
+Pairs: 500000
+Links: 419003
+File: zx/z50000.txt
+WQU: The number of links performed is 41812 for 50000 input pairs.
+WQU: The number of elementary operation is 179744 when serching, 250872 when performing union, with a total of 430616 operations for 50000 input pairs.
+Nodes: 50000
+Pairs: 50000
+Links: 41812
+File: zx/z5000.txt
+WQU: The number of links performed is 4203 for 5000 input pairs.
+WQU: The number of elementary operation is 16970 when serching, 25218 when performing union, with a total of 42188 operations for 5000 input pairs.
+Nodes: 5000
+Pairs: 5000
+Links: 4203
+File: zx/z500.txt
+WQU: The number of links performed is 417 for 500 input pairs.
+WQU: The number of elementary operation is 1650 when serching, 2502 when performing union, with a total of 4152 operations for 500 input pairs.
+Nodes: 500
+Pairs: 500
+Links: 417
+File: zx/z50.txt
+WQU: The number of links performed is 41 for 50 input pairs.
+WQU: The number of elementary operation is 132 when serching, 246 when performing union, with a total of 378 operations for 50 input pairs.
+Nodes: 50
+Pairs: 50
+Links: 41
