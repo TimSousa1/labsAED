@@ -223,8 +223,8 @@ void weighted_quick_union(int *id, int N, FILE * fp, int quietOut)
     while (fscanf(fp, "%d %d", &p, &q) == 2) {
         pairs_cnt++;
         /* do search first */
-        for (i = p; i != id[i]; i = id[i], union_operations_cnt += 2);
-        for (j = q; j != id[j]; j = id[j], union_operations_cnt += 2);
+        for (i = p; i != id[i]; i = id[i], find_operations_cnt += 2);
+        for (j = q; j != id[j]; j = id[j], find_operations_cnt += 2);
 
         if (i == j) {
             /* already in the same set; discard */
