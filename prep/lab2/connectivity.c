@@ -102,6 +102,8 @@ void quick_find(int *id, int N, FILE * fp, int quietOut)
 
         alreadyRead[trees - 1] = id[i];
     }
+    free(alreadyRead);
+    
     printf("Number of sets: %d\n", trees);
     printf("QF: The number of links performed is %d for %d input pairs.\n",
             links_cnt, pairs_cnt);
