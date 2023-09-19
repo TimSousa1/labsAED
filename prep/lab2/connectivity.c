@@ -87,7 +87,7 @@ void quick_find(int *id, int N, FILE * fp, int quietOut)
                 complexity_cnt++;
             }
         }
-        if (skip == 1) continue;
+        if (skip) continue;
         printf("%d", i);
         for (t = i + 1; t < N; t++) {
             if (id[i] == id[t]) printf("-%d", t);
