@@ -26,6 +26,13 @@
 
 #include "memmgt.h"
 
+/* 0 for FIRST FIRST
+ * 1 for NEXT FIT 
+ * 2 for BEST FIT 
+ * 3 for WORST FIT 
+ * 4 for QUICK FIRST */
+#define FIT 0
+
 /* possible states of memory blocks */
 typedef enum {ALLOC, FREE} mem_state;
 
@@ -55,6 +62,8 @@ t_memory* memoryLst = NULL;
  *****************************************************************************/
 
 void startMemoryManager(int size) {
+
+    printf("initializing a memory block of size %i\n", size);
 
     /* allocate system memory; recall we have a function to allocate a block */
     memoryLst = (t_memory*) malloc (sizeof(t_memory));
@@ -88,7 +97,6 @@ t_memory* newMemoryBlock(int address, int size, mem_state state) {
     t_memory *block;
 
     /* allocate a block of a given size and return a pointer to it */
-
     block = (t_memory*) malloc (sizeof(t_memory)); /* COMPLETAR: codigo de alocacao de memoria */
 
     if (!block) exit(EXIT_FAILURE);
@@ -96,6 +104,9 @@ t_memory* newMemoryBlock(int address, int size, mem_state state) {
     block->address = address;
     block->size = size;
     block->state = state;
+
+    printf("created a block with:\naddress: %i\nsize: %i\nstate: %i\n",
+            block->address, block->size, block->state);
 
     return block;
 }
@@ -141,9 +152,12 @@ int myMalloc(int size) {
     int address = -1;  /* default is the allocation was not successfull */
     t_memory *find, *prev, *alloc;
 
+#if (FIT == 0)
     for (find = memoryLst; find; find = find->next){
         if (find->size >= size && find->state == FREE){
+            printf("found a suitable block of size %i\n", find->size);
             if (find->size > size) {
+                printf("creating a block of size %i\n", find->size - size);
                 alloc = find->next;
                 find->next = newMemoryBlock(find->address + size, find->size - size, find->state);
                 find->next->next = alloc;
@@ -153,7 +167,7 @@ int myMalloc(int size) {
             find->state = ALLOC;
             break;
         }
-
+#endif
         /* COMPLETAR: implementacao do algoritmo de alocacao de memoria
          * pedido no enunciado lembrar necessidade de tratamento diferenciado
          * para o primeiro da lista, para um elemento qualquer da lista e
@@ -165,23 +179,24 @@ int myMalloc(int size) {
 }
 
 
-    /******************************************************************************
-     * myFree()
-     *
-     * Arguments: address (int)  - address where the block was allocated
-     * Returns: size of block that was just freed
-     * Side-Effects: if the function is successfull, a block previously
-     *               allocated in address is now returned; the block may be merged
-     *               with the block before it and after it, therefore the list
-     *               could be changed
-     * Description: memory allocation algorithm
-     *
-     *****************************************************************************/
+/******************************************************************************
+ * myFree()
+ *
+ * Arguments: address (int)  - address where the block was allocated
+ * Returns: size of block that was just freed
+ * Side-Effects: if the function is successfull, a block previously
+ *               allocated in address is now returned; the block may be merged
+ *               with the block before it and after it, therefore the list
+ *               could be changed
+ * Description: memory allocation algorithm
+ *
+ *****************************************************************************/
 
 int myFree(int address) {
 
     int size;
     t_memory *find, *previous = NULL;
+    t_memory *tmp = NULL;
 
     find = memoryLst;
 
@@ -199,6 +214,50 @@ int myFree(int address) {
 
     /* Liberta bloco se encontrar */
 
+    find->state = FREE;
+    if (find == memoryLst) {
+        printf("freeing the first block..\n");
+        if (find->next){
+            if (find->next->state == FREE){
+                /* merge blocks */
+                printf("merging with next..\n");
+                find->size += find->next->size;
+
+                tmp = find->next;
+                find->next = find->next->next;
+                free(tmp);
+                printf("merged and free'd!\n");
+            }
+        }
+        size = find->size;
+        return size;
+    }
+
+    if (previous->state == FREE) {
+        /* merge blocks */
+        printf("merging with previous..\n");
+        previous->size += find->size;
+
+        tmp = find;
+        previous->next = find->next;
+        free(tmp);
+        find = previous;
+        printf("merged and free'd!\n");
+    }
+
+    if (find->next){
+        if (find->next->state == FREE){
+            /* merge blocks */
+            printf("merging with next..\n");
+            find->size += find->next->size;
+
+            tmp = find->next;
+            find->next = find->next->next;
+            free(tmp);
+            printf("merged and free'd!\n");
+        }
+    }
+    size = find->size;
     /* COMPLETAR: implementacao do algoritmo de libertacao de memoria
      * pedido no enunciado lembrar necessidade de tratamento diferenciado
      * para o primeiro da lista, para um elemento qualquer da lista e
@@ -227,7 +286,14 @@ void showMemory() {
 
     t_memory* find;
 
-    find = memoryLst;
+    char state;
+    printf("Showing current memory list..\n-------------------------\n");
+
+    for (find = memoryLst; find; find = find->next){
+        state = 'A' + 5 * find->state;
+        printf("address: %i\nsize: %i\nstate: %c\n---------------------\n",
+                find->address, find->size, state);
+    }
 
     /* COMPLETAR: percorre lista e mostra estado de todos os blocos */
 

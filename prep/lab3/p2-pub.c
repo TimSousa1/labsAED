@@ -66,7 +66,7 @@ int main(void)
       }
 
       /* memory allocation */
-      ret = /* COMPLETAR: alocação de bloco de dimensao lida */;
+      ret = myMalloc(val);
       if (ret == -1)
         fprintf ( stdout, "%d\n", ret);
       else
@@ -82,7 +82,7 @@ int main(void)
       }
 
       /* free memory */
-      ret = /* COMPLETAR: libertação de bloco de memória no endereço lido */;
+      ret = myFree(val);
       if (ret == -2)
         fprintf ( stdout, "%d\n", ret);
       else
