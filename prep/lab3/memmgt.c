@@ -31,7 +31,7 @@
  * 2 for BEST FIT 
  * 3 for WORST FIT 
  * 4 for QUICK FIRST */
-#define FIT 0
+#define FIT 1
 
 /* possible states of memory blocks */
 typedef enum {ALLOC, FREE} mem_state;
@@ -46,7 +46,9 @@ typedef struct _t_memory {
 
 /* head of memory management Linked list */
 t_memory* memoryLst = NULL;
-
+#if (FIT == 1) 
+    t_memory* currentLst = NULL;
+#endif
 
 /******************************************************************************
  * startMemoryManager()
@@ -74,6 +76,9 @@ void startMemoryManager(int size) {
 
     memoryLst->next = NULL;
 
+#if (FIT == 1)
+    currentLst = memoryLst;
+#endif
     return;
 }
 
@@ -167,14 +172,29 @@ int myMalloc(int size) {
             find->state = ALLOC;
             break;
         }
-#endif
-        /* COMPLETAR: implementacao do algoritmo de alocacao de memoria
-         * pedido no enunciado lembrar necessidade de tratamento diferenciado
-         * para o primeiro da lista, para um elemento qualquer da lista e
-         * possivelmente para o último
-         */
     }
 
+#elif (FIT == 1)
+    int isFirst = 1;
+    for (find = currentLst; find != currentLst || isFirst == 1; (find->next == NULL) ? find = memoryLst : find->next, isFirst = 0){
+        if (find->size >= size && find->state == FREE){
+            printf("found a suitable block of size %i\n", find->size);
+            if (find->size > size) {
+                printf("creating a block of size %i\n", find->size - size);
+                alloc = find->next;
+                find->next = newMemoryBlock(find->address + size, find->size - size, find->state);
+                find->next->next = alloc;
+                find->size = size;
+            }
+            address = find->address;
+            find->state = ALLOC;
+            currentLst = find->next;
+            return address;
+        }
+    }
+#elif (FIT == 2)
+    
+#endif
     return address;
 }
 
@@ -215,38 +235,21 @@ int myFree(int address) {
     /* Liberta bloco se encontrar */
 
     find->state = FREE;
-    if (find == memoryLst) {
-        printf("freeing the first block..\n");
-        if (find->next){
-            if (find->next->state == FREE){
-                /* merge blocks */
-                printf("merging with next..\n");
-                find->size += find->next->size;
+    if (previous) {
+        if (previous->state == FREE && previous->address < find->address) {
+            /* merge blocks */
+            printf("merging with previous..\n");
+            previous->size += find->size;
 
-                tmp = find->next;
-                find->next = find->next->next;
-                free(tmp);
-                printf("merged and free'd!\n");
-            }
+            tmp = find;
+            previous->next = find->next;
+            free(tmp);
+            find = previous;
+            printf("merged and free'd!\n");
         }
-        size = find->size;
-        return size;
     }
-
-    if (previous->state == FREE) {
-        /* merge blocks */
-        printf("merging with previous..\n");
-        previous->size += find->size;
-
-        tmp = find;
-        previous->next = find->next;
-        free(tmp);
-        find = previous;
-        printf("merged and free'd!\n");
-    }
-
     if (find->next){
-        if (find->next->state == FREE){
+        if (find->next->state == FREE && find->next->address < find->address){
             /* merge blocks */
             printf("merging with next..\n");
             find->size += find->next->size;
