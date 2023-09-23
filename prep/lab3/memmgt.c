@@ -167,6 +167,8 @@ int myMalloc(int size) {
             find->state = ALLOC;
             break;
         }
+#elif (FIT == 1)
+
 #endif
         /* COMPLETAR: implementacao do algoritmo de alocacao de memoria
          * pedido no enunciado lembrar necessidade de tratamento diferenciado
@@ -215,35 +217,6 @@ int myFree(int address) {
     /* Liberta bloco se encontrar */
 
     find->state = FREE;
-    if (find == memoryLst) {
-        printf("freeing the first block..\n");
-        if (find->next){
-            if (find->next->state == FREE){
-                /* merge blocks */
-                printf("merging with next..\n");
-                find->size += find->next->size;
-
-                tmp = find->next;
-                find->next = find->next->next;
-                free(tmp);
-                printf("merged and free'd!\n");
-            }
-        }
-        size = find->size;
-        return size;
-    }
-
-    if (previous->state == FREE) {
-        /* merge blocks */
-        printf("merging with previous..\n");
-        previous->size += find->size;
-
-        tmp = find;
-        previous->next = find->next;
-        free(tmp);
-        find = previous;
-        printf("merged and free'd!\n");
-    }
 
     if (find->next){
         if (find->next->state == FREE){
@@ -257,6 +230,21 @@ int myFree(int address) {
             printf("merged and free'd!\n");
         }
     }
+
+    if (previous) {
+        if (previous->state == FREE) {
+            /* merge blocks */
+            printf("merging with previous..\n");
+            previous->size += find->size;
+
+            tmp = find;
+            previous->next = find->next;
+            free(tmp);
+            find = previous;
+            printf("merged and free'd!\n");
+        }
+    }
+
     size = find->size;
     /* COMPLETAR: implementacao do algoritmo de libertacao de memoria
      * pedido no enunciado lembrar necessidade de tratamento diferenciado
