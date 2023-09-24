@@ -26,12 +26,12 @@
 
 #include "memmgt.h"
 
-/* 0 for FIRST FIRST
+/* 0 for FIRST FIT
  * 1 for NEXT FIT 
  * 2 for BEST FIT 
  * 3 for WORST FIT 
- * 4 for QUICK FIRST */
-#define FIT 2
+ * 4 for QUICK FIT */
+#define FIT 1
 
 /* possible states of memory blocks */
 typedef enum {ALLOC, FREE} mem_state;
@@ -176,7 +176,7 @@ int myMalloc(int size) {
 
 #elif (FIT == 1)
     int isFirst = 1;
-    for (find = currentLst; find != currentLst || isFirst == 1; (find->next == NULL) ? find = memoryLst : find->next, isFirst = 0){
+    for (find = currentLst; find != currentLst || isFirst == 1;){
         if (find->size >= size && find->state == FREE){
             printf("found a suitable block of size %i\n", find->size);
             if (find->size > size) {
@@ -188,9 +188,15 @@ int myMalloc(int size) {
             }
             address = find->address;
             find->state = ALLOC;
-            currentLst = find->next;
+            if (!find->next) currentLst = memoryLst;
+            else currentLst = find->next;
             return address;
         }
+        if (!find->next) {
+            find = memoryLst;
+            isFirst = 0;
+        }
+        else find = find->next;
     }
 #elif (FIT == 2)
     alloc = NULL;
@@ -211,7 +217,27 @@ int myMalloc(int size) {
     address = find->address;
     find->state = ALLOC;
     return address;
-
+#elif (FIT == 3)
+    alloc = NULL;
+    for (find = memoryLst; find; find = find->next) {
+        if (!alloc && find->size >= size && find->state == FREE) alloc = find;
+        else if (alloc) {
+            if (find->state == FREE && find->size >= size && find->size > alloc->size) alloc = find;
+        }
+    }
+    find = alloc;
+    if (find->size > size) {
+        printf("creating a block of size %i\n", find->size - size);
+        alloc = find->next;
+        find->next = newMemoryBlock(find->address + size, find->size - size, find->state);
+        find->next->next = alloc;
+        find->size = size;
+    }
+    address = find->address;
+    find->state = ALLOC;
+    return address;
+#elif (FIT == 4)
+    
 #endif
     return address;
 }
@@ -254,7 +280,7 @@ int myFree(int address) {
 
     find->state = FREE;
     if (previous) {
-        if (previous->state == FREE && previous->address < find->address) {
+        if (previous->state == FREE) {
             /* merge blocks */
             printf("merging with previous..\n");
             previous->size += find->size;
@@ -267,7 +293,7 @@ int myFree(int address) {
         }
     }
     if (find->next){
-        if (find->next->state == FREE && find->next->address < find->address){
+        if (find->next->state == FREE){
             /* merge blocks */
             printf("merging with next..\n");
             find->size += find->next->size;
