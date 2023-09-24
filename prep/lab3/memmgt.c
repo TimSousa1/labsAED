@@ -31,7 +31,7 @@
  * 2 for BEST FIT 
  * 3 for WORST FIT 
  * 4 for QUICK FIT */
-#define FIT 1
+#define FIT 4
 
 /* possible states of memory blocks */
 typedef enum {ALLOC, FREE} mem_state;
@@ -210,6 +210,7 @@ int myMalloc(int size) {
             if (find->state == FREE && find->size >= size && find->size < alloc->size) alloc = find;
         }
     }
+    if (!alloc) return address;
     find = alloc;
     if (find->size > size) {
         printf("creating a block of size %i\n", find->size - size);
@@ -229,6 +230,7 @@ int myMalloc(int size) {
             if (find->state == FREE && find->size >= size && find->size > alloc->size) alloc = find;
         }
     }
+    if (!alloc) return address;
     find = alloc;
     if (find->size > size) {
         printf("creating a block of size %i\n", find->size - size);
