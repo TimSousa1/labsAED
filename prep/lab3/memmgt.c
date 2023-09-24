@@ -134,8 +134,12 @@ t_memory* newMemoryBlock(int address, int size, mem_state state) {
 void closeMemoryManager() {
 
     /* COMPLETAR: codigo para libertacao da lista de blocos */
-
+    t_memory *find, *toFree;
     /* Memory blocks list is accessiblethrough memoryLst */
+    for (find = memoryLst; find; free(toFree)) {
+        toFree = find;
+        find = find->next;
+    }
 
     return;
 }
