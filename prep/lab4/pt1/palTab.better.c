@@ -24,6 +24,8 @@ typedef struct _st_texto {
     int  *ocorrencias;          /* Table of integers counting occurrence */
 } st_texto;
 
+int NovaPalavra ( char *palavra, st_texto *t );
+
 
 /******************************************************************************
  * LePalavra()
@@ -88,39 +90,29 @@ void AlocaTabelaPalavras ( char *ficheiro, st_texto *t)
 {
     FILE *fp;
     char *palavra;
-    int i, len, n_max_caracteres = 0;
+    int i, len;
 
     (*t).n_total_palavras = 0;
     (*t).n_dist_palavras = 0;
+    t->palavras = NULL;
+    t->ocorrencias = NULL;
     fp = AbreFicheiro ( ficheiro, "r" );
     while ( ( palavra = LePalavra ( fp ) ) != NULL ) {
+        if ((i = NovaPalavra(palavra, t)) == -1) {
+            t->palavras = (char **) realloc(t->palavras, (t->n_dist_palavras + 1) * sizeof(char *));
+            t->ocorrencias = (int *) realloc(t->ocorrencias, (t->n_dist_palavras + 1) * sizeof(int));
+            t->ocorrencias[t->n_dist_palavras] = 1;
+            t->palavras[t->n_dist_palavras] = (char *) malloc((strlen(palavra) + 1) * sizeof(char));
+            strcpy(t->palavras[t->n_dist_palavras], palavra);
+            t->n_dist_palavras++;
+        } else {
+            t->ocorrencias[i]++;
+        }
         (*t).n_total_palavras++;
-        len = strlen ( palavra );
-        if ( len > n_max_caracteres )
-            n_max_caracteres = len;
     }
     fclose ( fp );
     printf ( "Words count: %d\n", (*t).n_total_palavras );
 
-    (*t).palavras = (char **) malloc(t->n_total_palavras * sizeof(char *));
-    if ( (*t).palavras == NULL ) {
-        fprintf ( stderr, "ERROR: not enough memory available!\n" );
-        exit ( 2 );
-    }
-    (*t).ocorrencias = (int *) malloc(t->n_total_palavras * sizeof(int));
-    if ( (*t).ocorrencias == NULL ) {
-        fprintf ( stderr, "ERROR: not enough memory available!\n" );
-        exit ( 4 );
-    }
-    for ( i = 0; i < (*t).n_total_palavras; i++ )   {
-        (*t).palavras[i] = (char *) malloc((n_max_caracteres + 1) * sizeof(char));
-        if ( (*t).palavras[i] == NULL ) {
-            fprintf ( stderr, "ERROR: not enough memory available!\n" );
-            exit ( 3 );
-        }
-        (*t).palavras[i][0] = '\0';
-        (*t).ocorrencias[i] = 0;
-    }
     return;
 }
 
@@ -141,7 +133,7 @@ void AlocaTabelaPalavras ( char *ficheiro, st_texto *t)
 int NovaPalavra ( char *palavra, st_texto *t )
 {
     int i = 0;
-    while ( ( (*t).palavras[i][0] != '\0' ) && i < (*t).n_total_palavras ) {
+    while ( i < (*t).n_dist_palavras ) {
         if ( strcmp ( (*t).palavras[i], palavra ) == 0 )
             return (i);
         i++;
@@ -218,7 +210,7 @@ void EscreveFicheiro ( char *ficheiro, st_texto *t )
 
     /* Anything else I should do here? */
     free(nome);
-    for (i = 0; i < t->n_total_palavras; i++) {
+    for (i = 0; i < t->n_dist_palavras; i++) {
         free(t->palavras[i]);
     }
     free(t->palavras);
@@ -250,7 +242,7 @@ int main ( int argc, char **argv )
         exit ( 6 );
     }
     AlocaTabelaPalavras ( argv[1], &st_palavras );
-    PreencheTabelaPalavras ( argv[1],&st_palavras );
+    //PreencheTabelaPalavras ( argv[1],&st_palavras );
     EscreveFicheiro ( argv[1], &st_palavras );
 
     return (0);
