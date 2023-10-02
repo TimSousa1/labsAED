@@ -17,12 +17,13 @@
 #include <strings.h>
 
 #include "list.h"
+#include "words.h"
 
 
 /* Linked list  */
 struct _t_lista {
-  Item            this;
-  struct _t_lista *prox;
+    Item            this;
+    struct _t_lista *prox;
 };
 
 
@@ -38,7 +39,7 @@ struct _t_lista {
 
 t_lista  *iniLista(void)
 {
-  return NULL;
+   return NULL;
 }
 
 
@@ -55,18 +56,18 @@ t_lista  *iniLista(void)
 
 t_lista  *criaNovoNoLista (t_lista* lp, Item this, int *err)
 {
-  t_lista *novoNo;
+    t_lista *novoNo;
 
-  novoNo = (t_lista*) malloc(sizeof(t_lista));
-  if(novoNo!=NULL) {
-    novoNo->this = this;
-    novoNo->prox = lp;
-    lp = novoNo;
-    *err = 0;
-  } else {
-    *err = 1;
-  }
-  return lp;
+    novoNo = (t_lista*) malloc(sizeof(t_lista));
+    if(novoNo!=NULL) {
+        novoNo->this = this;
+        novoNo->prox = lp;
+        lp = novoNo;
+        *err = 0;
+    } else {
+        *err = 1;
+    }
+    return lp;
 }
 
 
@@ -82,7 +83,8 @@ t_lista  *criaNovoNoLista (t_lista* lp, Item this, int *err)
 
 Item getItemLista (t_lista *p)
 {
-  return p -> this;
+    
+    return p -> this;
 }
 
 
@@ -99,7 +101,7 @@ Item getItemLista (t_lista *p)
 
 t_lista *getProxElementoLista(t_lista *p) {
 
-  return p -> prox;
+    return p -> prox;
 }
 
 
@@ -114,15 +116,15 @@ t_lista *getProxElementoLista(t_lista *p) {
  *
  *****************************************************************************/
 
-int numItensNaLista(t_lista *lp) {
-  t_lista *aux;  /* auxiliar pointers to travel through the list */
-  int conta = 0;
-  aux = lp;
+int numItemsNaLista(t_lista *lp) {
+    t_lista *aux;  /* auxiliar pointers to travel through the list */
+    int conta = 0;
+    aux = lp;
 
-  for(aux = lp; aux != NULL; aux = aux -> prox)
-    conta++;
+    for(aux = lp; aux != NULL; aux = aux -> prox)
+        conta++;
 
-  return conta;
+    return conta;
 }
 
 /******************************************************************************
@@ -137,13 +139,14 @@ int numItensNaLista(t_lista *lp) {
  *****************************************************************************/
 
 void libertaLista(t_lista *lp, void freeItem(Item)) {
-  t_lista *aux, *newhead;  /* auxiliar pointers to travel through the list */
+    t_lista *aux, *newhead;  /* auxiliar pointers to travel through the list */
 
-  for(aux = lp; aux != NULL; aux = newhead) {
-    newhead = aux->prox;
-    freeItem(aux->this);
-    free(aux);
-  }
+    for(aux = lp; aux != NULL; aux = newhead) {
+        newhead = aux->prox;
+        libertaItem(aux->this);
+        free(aux);
+    }
 
-  return;
+    return;
 }
+

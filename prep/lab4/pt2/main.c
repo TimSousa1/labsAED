@@ -34,8 +34,8 @@
 
 void Usage(char *nomeProg)
 {
-  printf("Usage: %s [filename] [arguments options]\n", nomeProg);
-  exit(1);
+    printf("Usage: %s [filename] 'INICIO/FIM' \n", nomeProg);
+    exit(1);
 }
 
 
@@ -52,61 +52,73 @@ void Usage(char *nomeProg)
 
 int main(int argc, char *argv[])
 {
-  t_lista *lp, *aux;
-  int numTotalPalavras = 0;
-  int numPalavrasDiferentes;
-  char extOut[] = ".palavras";
-  char *nomeFicheiroIn, *nomeFicheiroOut;
-  char novaPal[DIM_MAX_PALAVRA];
-  FILE *fpIn,*fpOut;
+    t_lista *lp, *aux;
+    int numTotalPalavras = 0;
+    int numPalavrasDiferentes;
+    int mode;
+    char extOut[] = ".palavras";
+    char *nomeFicheiroIn, *nomeFicheiroOut;
+    char novaPal[DIM_MAX_PALAVRA];
+    FILE *fpIn,*fpOut;
 
-  if(argc < 2)
-    Usage(argv[0]);
+    if(argc < 3)
+        Usage(argv[0]);
 
-  nomeFicheiroIn = argv[1];
-  nomeFicheiroOut = /* -- INSERT CODE to ALLOCATE MEMORY -- */
+    if (strcmp(argv[2], "INICIO") == 0) mode = 1;
+    else if (strcmp(argv[2], "FIM") == 0) mode = 2;
+    else Usage(argv[0]);
+
+    nomeFicheiroIn = argv[1];
+
+    nomeFicheiroOut = (char *) malloc((strlen(nomeFicheiroIn) + strlen(extOut) + 1) * sizeof(char));
     if(nomeFicheiroOut == NULL)
-      erroMemoria("Memory allocation for nomeFicheiroOut in main" );
+        erroMemoria("Memory allocation for nomeFicheiroOut in main" );
 
-  strcpy(nomeFicheiroOut, nomeFicheiroIn);
-  strcat(nomeFicheiroOut, extOut);
+    strcpy(nomeFicheiroOut, nomeFicheiroIn);
+    strcat(nomeFicheiroOut, extOut);
 
-  /* open input file */
-  fpIn  = fopen(nomeFicheiroIn,"r");
-  if(fpIn == NULL) {
-    printf("ERROR cannot read input file %s\n", nomeFicheiroIn);
-    exit(2);
-  }
-  /* read input file, build word list */
-  lp = iniLista();
-  while(fscanf(fpIn, "%s", novaPal) == 1) {
-    lp = testaPalavra(lp, novaPal);
-    numTotalPalavras++;
-  }
+    /* open input file */
+    fpIn  = fopen(nomeFicheiroIn,"r");
+    if(fpIn == NULL) {
+        printf("ERROR cannot read input file %s\n", nomeFicheiroIn);
+        exit(2);
+    }
+    /* read input file, build word list */
+    lp = iniLista();
+    while(fscanf(fpIn, "%s", novaPal) == 1) {
+        lp = testaPalavra(lp, novaPal);
+        numTotalPalavras++;
+    }
 
-  /* open output file */
-  fpOut = fopen (nomeFicheiroOut, "w");
-  if(fpOut == NULL) {
-    printf("ERROR cannot write output file %s\n", nomeFicheiroOut);
-    exit(3);
-  }
-  /* write out words to output file */
-  aux = lp;
-  while(aux != NULL) {
-    escreveUmaPalavra((t_palavra*) getItemLista(aux), fpOut);
-    aux = getProxElementoLista(aux);
-  }
+    /* open output file */
+    fpOut = fopen (nomeFicheiroOut, "w");
+    if(fpOut == NULL) {
+        printf("ERROR cannot write output file %s\n", nomeFicheiroOut);
+        exit(3);
+    }
+    /* write out words to output file */
+    numPalavrasDiferentes = numItemsNaLista(lp);
+  
+    if (mode == 1) {
+        for (aux = lp; aux; aux = getProxElementoLista(aux)) {
+            escreveUmaPalavra(getItemLista(aux), fpOut, numPalavrasDiferentes);
+        }
+    } else {
+        aux = lp;
+        escreveFim(aux, fpOut, numPalavrasDiferentes);
 
-  numPalavrasDiferentes = numItensNaLista(lp);
-  printf("Number of words = %d, Number of different words = %d\n",
-         numTotalPalavras, numPalavrasDiferentes);
+    }
+    printf("Number of words = %d, Number of different words = %d\n",
+           numTotalPalavras, numPalavrasDiferentes);
 
-  /* free allocated memory for list of words */
-  libertaLista(lp, libertaItem);
+    /* free allocated memory for list of words */
+    libertaLista(lp, libertaItem);
 
-  /* -- CLOSE ALL OPEN FILES -- */
+    /* -- CLOSE ALL OPEN FILES -- */
+    fclose(fpIn);
+    fclose(fpOut);
+    /* -- FREE ANY OTHER MEMORY YOU HAVE ALLOCATED -- */
+    free(nomeFicheiroOut);
 
-  /* -- FREE ANY OTHER MEMORY YOU HAVE ALLOCATED -- */
-
-  exit(0);
+    exit(0);
 }

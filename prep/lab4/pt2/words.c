@@ -22,8 +22,8 @@
 
 
 struct _t_palavra {
-  char* pal;
-  int ocorrencias;
+    char* pal;
+    int ocorrencias;
 };
 
 
@@ -45,25 +45,25 @@ struct _t_palavra {
 
 t_lista  *testaPalavra(t_lista *lp, char *novaPal)
 {
-  t_lista *aux;       /* pointer to scan the list */
-  t_palavra *pal;
-  int err;            /* error status, not checked */
+    t_lista *aux;       /* pointer to scan the list */
+    t_palavra *pal;
+    int err;            /* error status, not checked */
 
-  aux = lp;
-  while (aux != NULL){
-    pal = (t_palavra*) getItemLista(aux);
-    if( strcasecmp(getPalavra(pal),novaPal) == 0) {
-      incOcorr(pal);
-      return lp;
+    aux = lp;
+    while (aux != NULL){
+        pal = (t_palavra*) getItemLista(aux);
+        if( strcasecmp(getPalavra(pal),novaPal) == 0) {
+            incOcorr(pal);
+            return lp;
+        }
+        aux = getProxElementoLista(aux);
     }
-    aux = getProxElementoLista(aux);
-  }
-  /* Expect insertion at the begin of the list (not sorted!) */
+    /* Expect insertion at the begin of the list (not sorted!) */
 
-  pal = criaPalavra(novaPal);
-  lp = criaNovoNoLista(lp, pal, &err);
+    pal = criaPalavra(novaPal);
+    lp = criaNovoNoLista(lp, pal, &err);
 
-  return lp;
+    return lp;
 }
 
 
@@ -79,8 +79,8 @@ t_lista  *testaPalavra(t_lista *lp, char *novaPal)
 
 void libertaItem(Item this)
 {
-  libertaPalavra((t_palavra *) this);
-  return;
+    libertaPalavra((t_palavra *) this);
+    return;
 }
 
 
@@ -98,11 +98,11 @@ void libertaItem(Item this)
 
 void erroMemoria(char *msg) {
 
-  fprintf(stderr, "Error during memory reserve attempt.\n");
-  fprintf(stderr, "Msg: %s\n",msg);
-  fprintf(stderr, "Exit Program due to unmanaged error.\n");
+    fprintf(stderr, "Error during memory reserve attempt.\n");
+    fprintf(stderr, "Msg: %s\n",msg);
+    fprintf(stderr, "Exit Program due to unmanaged error.\n");
 
-  exit(1);
+    exit(1);
 }
 
 
@@ -119,20 +119,20 @@ void erroMemoria(char *msg) {
 
 t_palavra  *criaPalavra(char *pal)
 {
-  t_palavra *nova;
+    t_palavra *nova;
 
-  nova = /* INSERT CODE to ALLOCATE MEMORY */
+    nova = (t_palavra *) malloc(sizeof(t_palavra));
     if(nova == NULL)
-      erroMemoria("Reserve memory for new word in criaPalavra" );
+        erroMemoria("Reserve memory for new word in criaPalavra" );
 
-  nova -> pal = /* INSERT CODE to ALLOCATE MEMORY */
+    nova -> pal = (char *) malloc((strlen(pal) + 1) * sizeof(char));
     if(nova == NULL)
-      erroMemoria("Reserve of name in criaPalavra" );
+        erroMemoria("Reserve of name in criaPalavra" );
 
-  strcpy(nova -> pal,pal);
-  nova -> ocorrencias = 1;
+    strcpy(nova -> pal,pal);
+    nova -> ocorrencias = 1;
 
-  return nova;
+    return nova;
 }
 
 
@@ -148,7 +148,7 @@ t_palavra  *criaPalavra(char *pal)
 
 char *getPalavra(t_palavra *p)
 {
-  return p -> pal;
+    return p -> pal;
 }
 
 
@@ -164,7 +164,7 @@ char *getPalavra(t_palavra *p)
 
 int getNocorr(t_palavra *p)
 {
-  return p -> ocorrencias;
+    return p -> ocorrencias;
 }
 
 
@@ -181,7 +181,7 @@ int getNocorr(t_palavra *p)
 
 void incOcorr(t_palavra *p)
 {
-  (p -> ocorrencias)++;
+    (p -> ocorrencias)++;
 }
 
 
@@ -197,9 +197,9 @@ void incOcorr(t_palavra *p)
  *              it was seen on the input (ocorrencias)
  *****************************************************************************/
 
-void escreveUmaPalavra(t_palavra *p, FILE *fp)
-{
-  fprintf(fp,"%4d : %s\n", p->ocorrencias, p->pal);
+void escreveUmaPalavra(t_palavra *p, FILE *fp, int n_palavras)
+{ 
+    fprintf(fp,"%4d : %s : %f\n", p->ocorrencias, p->pal, (float) p->ocorrencias / n_palavras);
 }
 
 
@@ -209,13 +209,22 @@ void escreveUmaPalavra(t_palavra *p, FILE *fp)
  * Arguments: p - pointer to word structure
  * Returns: (void)
  * Side-Effects: allocated memory for word structure is freed
- *
+ *i
  * Description: free memory reserved for word
  *****************************************************************************/
 
 void libertaPalavra(t_palavra *p)
 {
-  /* -- FREE MEMORY RESERVED FOR WORD -- */
+    free(p->pal);
+    free(p);
+}
 
-  return;
+void escreveFim(t_lista *list, FILE *fp, int num) {
+
+    if (!list) return;
+    else {
+        escreveFim(getProxElementoLista(list), fp, num);
+        escreveUmaPalavra(getItemLista(list), fp, num);
+    }
+
 }
