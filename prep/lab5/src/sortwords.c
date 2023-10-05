@@ -46,25 +46,25 @@ int OP_CNT = 0;     /* global variable, to simplify complexity assessment */
 
 void sort(Item arr[], int l, int r, int (*less) (Item, Item))
 {
-  int swapped = 1;
-  int i, j = 0;
-  Item tmp;
+    int swapped = 1;
+    int i, j = 0;
+    Item tmp;
 
-  while (swapped) {
-    swapped = 0;
-    for (i = r-1; i >= (l + j); i--) {
-      if (less(arr[i+1], arr[i])) {
-        tmp = arr[i];
-        arr[i] = arr[i + 1];
-        arr[i + 1] = tmp;
+    while (swapped) {
+        swapped = 0;
+        for (i = r-1; i >= (l + j); i--) {
+            if (less(arr[i+1], arr[i])) {
+                tmp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = tmp;
 
-        swapped = 1;
-      }
+                swapped = 1;
+            }
+        }
+        j++;
     }
-    j++;
-  }
 
-  return;
+    return;
 }
 
 
@@ -75,63 +75,68 @@ void sort(Item arr[], int l, int r, int (*less) (Item, Item))
 
 int main(int argc, char **argv)
 {
-   int TnumWords;              /* total number of words in input file */
-   int numWords;               /* number of distint words in input file */
-   WordTab wordtab;              /* table holding the structure */
+    int TnumWords;              /* total number of words in input file */
+    int numWords;               /* number of distint words in input file */
+    WordTab wordtab;              /* table holding the structure */
 
-   /* default initialization for alfabetic order and ascending */
-   enum sort_criteria criterio = alphabetic;
-   enum sort_order sentido  = ascending;
-   char *file = argv[1];
+    /* default initialization for alfabetic order and ascending */
+    enum sort_criteria criterio = alphabetic;
+    enum sort_order sentido  = ascending;
+    char *file = argv[1];
 
-   argv++;             /* get past prog and file names */
-   while (*(++argv)) {
-      if (strcmp(*argv, "-alfabetica") == 0)
-         criterio = alphabetic;
-      else if (strcmp(*argv, "-ocorrencias") == 0)
-         criterio = occurrences;
-      else if (strcmp(*argv, "-comprimento") == 0)
-         criterio = length;
-      else if (strcmp(*argv, "-a") == 0)
-         sentido = ascending;
-      else if (strcmp(*argv, "-d") == 0)
-         sentido = descending;
-      else {
-         fprintf(stderr, "Wrong arguments\n");
-         exit(3);
-      }
-   }
-   TnumWords = AllocWordArray(&wordtab, file);
-   printf("Total number of words: %d\n", TnumWords);
+    argv++;             /* get past prog and file names */
+    while (*(++argv)) {
+        if (strcmp(*argv, "-alfabetica") == 0)
+            criterio = alphabetic;
+        else if (strcmp(*argv, "-ocorrencias") == 0)
+            criterio = occurrences;
+        else if (strcmp(*argv, "-comprimento") == 0)
+            criterio = length;
+        else if (strcmp(*argv, "-a") == 0)
+            sentido = ascending;
+        else if (strcmp(*argv, "-d") == 0)
+            sentido = descending;
+        else {
+            fprintf(stderr, "Wrong arguments\n");
+            exit(3);
+        }
+    }
+    TnumWords = AllocWordArray(&wordtab, file);
+    printf("Total number of words: %d\n", TnumWords);
 
-   numWords = FillInWordArray(wordtab, file);
-   printf("Number of different words = %d\n", numWords);
+    numWords = FillInWordArray(wordtab, file);
+    printf("Number of different words = %d\n", numWords);
 
-   OP_CNT = 0;
+    OP_CNT = 0;
 
-   /*  Call the sorting function using as argument the
+    /*  Call the sorting function using as argument the
        appropriate comparison function selected by user option */
 
-   if ((criterio == alphabetic) && (sentido == ascending)) {
+    if ((criterio == alphabetic) && (sentido == ascending)) {
 
-      /*==== TODO ====*/
-      /* -- sort(....); -- */
+        /*==== TODO ====*/
+        /* -- sort(....); -- */
+        sort((void **)wordtab, 0, numWords - 1, &LessAlphabetic);
 
-   }
-   /* other user options */
-   /*==== TODO ====*/
+    } else if ((criterio == length) && (sentido == ascending)) {
+        sort((void **)wordtab, 0, numWords - 1, &LessLength);
+    } else if ((criterio == occurrences) && (sentido == ascending)) {
+        sort((void **)wordtab, 0, numWords - 1, &LessNumUses);
+    }
+    /* other user options */
+    /*==== TODO ====*/
 
-   /* ---------------------------------------- */
-   printf("Accesses count for sort: %d\n", OP_CNT);
+    /* ---------------------------------------- */
+    printf("Accesses count for sort: %d\n", OP_CNT);
 
-   WriteFile(wordtab, file, numWords);
-   /*  printf("Number of different words: %d\n", n_palavras);  */
+    WriteFile(wordtab, file, numWords);
+    /*  printf("Number of different words: %d\n", n_palavras);  */
 
-   /* -- Insert code to call functions to free allocated memory -- */
+    /* -- Insert code to call functions to free allocated memory -- */
 
-   /*==== TODO ====*/
+    /*==== TODO ====*/
 
-   /* ------------------------------------------------------------ */
+    /* ------------------------------------------------------------ */
 
-   return 0;
+    return 0;
 }

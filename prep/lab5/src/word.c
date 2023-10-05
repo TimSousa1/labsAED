@@ -25,8 +25,8 @@
 #include "word.h"
 
 struct _WordS {      /* structure for word */
-   char *word;
-   int  numUses;
+    char *word;
+    int  numUses;
 };
 
 
@@ -42,8 +42,8 @@ struct _WordS {      /* structure for word */
 
 void ExitMemError(int k)
 {
-   fprintf(stderr, "ERROR: Not enough memory.\n");
-   exit(k);
+    fprintf(stderr, "ERROR: Not enough memory.\n");
+    exit(k);
 }
 
 
@@ -61,12 +61,12 @@ void ExitMemError(int k)
 
 char *ReadWord(FILE * fp)
 {
-   static char locword[MAX_CHARS];         /* buffer for caller to copy */
+    static char locword[MAX_CHARS];         /* buffer for caller to copy */
 
-   if (fscanf(fp, "%s", locword) == 1)
-      return locword;
-   else
-      return NULL;
+    if (fscanf(fp, "%s", locword) == 1)
+        return locword;
+    else
+        return NULL;
 }
 
 
@@ -83,14 +83,14 @@ char *ReadWord(FILE * fp)
 
 FILE *OpenFile(char *name, char *mode)
 {
-   FILE *fp;
+    FILE *fp;
 
-   fp = fopen(name, mode);
-   if (fp == NULL) {
-      fprintf(stderr, "Error: Unable to open file '%s'\n.", name);
-      exit(1);
-   }
-   return fp;
+    fp = fopen(name, mode);
+    if (fp == NULL) {
+        fprintf(stderr, "Error: Unable to open file '%s'\n.", name);
+        exit(1);
+    }
+    return fp;
 }
 
 
@@ -115,14 +115,14 @@ int AllocWordArray(WordTab *wtab, char *file)
 
     fp = OpenFile(file, "r");
     while ((locword = ReadWord(fp)) != NULL)
-       nWords++;
+        nWords++;
 
     fclose(fp);
 
     (*wtab) = (WordTab) malloc(nWords * sizeof(WordS *));
 
     if (*wtab == NULL)
-       ExitMemError(2);
+        ExitMemError(2);
 
     return nWords;
 }
@@ -142,14 +142,14 @@ int AllocWordArray(WordTab *wtab, char *file)
 
 int NewWord(WordTab wtab, char *locword, int numWords)
 {
-   int i = 0;
+    int i = 0;
 
-   while (i < numWords) {
-      if (strcasecmp(wtab[i]->word, locword) == 0)
-         return i;
-      i++;
-   }
-   return -1;
+    while (i < numWords) {
+        if (strcasecmp(wtab[i]->word, locword) == 0)
+            return i;
+        i++;
+    }
+    return -1;
 }
 
 
@@ -166,35 +166,35 @@ int NewWord(WordTab wtab, char *locword, int numWords)
 
 int FillInWordArray(WordTab wtab, char *file)
 {
-   FILE *f;
-   int n;
-   char *locword;
-   int numWords = 0;
+    FILE *f;
+    int n;
+    char *locword;
+    int numWords = 0;
 
-   f = OpenFile(file, "r");
-   while ((locword = ReadWord(f)) != NULL) {
-      if ((n = NewWord(wtab, locword, numWords)) == -1) {
-         /* word has not been seen; add to table */
-         wtab[numWords] = (WordS *) malloc(sizeof(WordS));
+    f = OpenFile(file, "r");
+    while ((locword = ReadWord(f)) != NULL) {
+        if ((n = NewWord(wtab, locword, numWords)) == -1) {
+            /* word has not been seen; add to table */
+            wtab[numWords] = (WordS *) malloc(sizeof(WordS));
 
-         if (wtab[numWords] == NULL)
-            ExitMemError(3);
-         wtab[numWords]->word = (char *)
-            malloc(sizeof(char) * (strlen(locword) + 1));
+            if (wtab[numWords] == NULL)
+                ExitMemError(3);
+            wtab[numWords]->word = (char *)
+                malloc(sizeof(char) * (strlen(locword) + 1));
 
-         if (wtab[numWords]->word == NULL)
-            ExitMemError(4);
-         strcpy(wtab[numWords]->word, locword);
-         wtab[numWords]->numUses = 1;
-         numWords++;
-      }
-      else {
-         /* word is not new; increment occurrence count */
-         wtab[n]->numUses++;
-      }
-   }
-   fclose(f);
-   return numWords;
+            if (wtab[numWords]->word == NULL)
+                ExitMemError(4);
+            strcpy(wtab[numWords]->word, locword);
+            wtab[numWords]->numUses = 1;
+            numWords++;
+        }
+        else {
+            /* word is not new; increment occurrence count */
+            wtab[n]->numUses++;
+        }
+    }
+    fclose(f);
+    return numWords;
 }
 
 
@@ -217,10 +217,10 @@ void WriteFile(WordTab wtab, char *ficheiro, int numWords)
     int i = 0;
 
     word = (char *) malloc(
-                (strlen(ficheiro) + strlen(".palavras") + 1) * sizeof(char));
+        (strlen(ficheiro) + strlen(".palavras") + 1) * sizeof(char));
     if (word == NULL) {
         fprintf(stderr,
-            "ERROR: allocation of output filename. Not enough memory.\n");
+                "ERROR: allocation of output filename. Not enough memory.\n");
         exit(2);
     }
     strcpy(word, ficheiro);
@@ -251,11 +251,20 @@ void WriteFile(WordTab wtab, char *ficheiro, int numWords)
 
 void FreeWordArray(WordTab *wtab, int numWords)
 {
-   /** -- free all memory allocated for table of words -- */
+    /** -- free all memory allocated for table of words -- */
 
-   /*==== TODO ====*/
+    /*==== TODO ====*/
+    int i;
 
-   return;
+    for (i = 0; i < numWords; i++) {
+
+        free((*wtab[i])->word);
+        free(*wtab[i]);
+
+    }
+    free(*wtab);
+
+    return;
 }
 
 
@@ -271,10 +280,10 @@ void FreeWordArray(WordTab *wtab, int numWords)
 
 int LessAlphabetic(Item a, Item b)
 {
-   if (strcasecmp(((WordS *) a)->word, ((WordS *) b)->word) < 0)
-      return 1;
-   else
-      return 0;
+    if (strcasecmp(((WordS *) a)->word, ((WordS *) b)->word) < 0)
+        return 1;
+    else
+        return 0;
 }
 
 
@@ -282,5 +291,21 @@ int LessAlphabetic(Item a, Item b)
  **  -- Add comparison functions for the remaining criteria --
 *************************************************************************/
 
-    /*==== TODO ====*/
+/*==== TODO ====*/
+
+int LessNumUses(Item a, Item b) {
+
+    if (((WordS *) a)->numUses < ((WordS *) b)->numUses)
+        return 1;
+    else
+        return 0;
+}
+
+int LessLength(Item a, Item b) {
+
+    if (strlen(((WordS *) a)->word) < strlen(((WordS *) b)->word))
+        return 1;
+    else
+        return 0;
+}
 
