@@ -57,9 +57,10 @@ void sort(Item arr[], int l, int r, int (*less) (Item, Item))
                 tmp = arr[i];
                 arr[i] = arr[i + 1];
                 arr[i + 1] = tmp;
-
+                OP_CNT += 4;
                 swapped = 1;
             }
+            OP_CNT += 2;
         }
         j++;
     }
@@ -135,6 +136,7 @@ int main(int argc, char **argv)
     /* -- Insert code to call functions to free allocated memory -- */
 
     /*==== TODO ====*/
+    FreeWordArray(&wordtab, numWords);
 
     /* ------------------------------------------------------------ */
 
