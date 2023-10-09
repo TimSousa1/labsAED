@@ -40,7 +40,7 @@ clean:
 	rm -f *.o  sortwords qsortwords
 
 
-FILES = $(shell ls ../test/*.txt)
+FILES = $(shell ls ../tests/*.txt)
 
 VALG = valgrind --leak-check=full
 

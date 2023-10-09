@@ -79,6 +79,7 @@ int main(int argc, char **argv)
     int TnumWords;              /* total number of words in input file */
     int numWords;               /* number of distint words in input file */
     WordTab wordtab;              /* table holding the structure */
+    FILE *out;
 
     /* default initialization for alfabetic order and ascending */
     enum sort_criteria criterio = alphabetic;
@@ -133,6 +134,15 @@ int main(int argc, char **argv)
     WriteFile(wordtab, file, numWords);
     /*  printf("Number of different words: %d\n", n_palavras);  */
 
+    out = fopen("out_sortwords.csv", "a");
+    if (!out) goto skip_csv;
+
+    fprintf(out, "%i,%i\n", numWords, OP_CNT);
+
+    fclose(out);
+
+    /* -- Insert code to call functions to free allocated memory -- */
+skip_csv:
     /* -- Insert code to call functions to free allocated memory -- */
 
     /*==== TODO ====*/
