@@ -258,8 +258,8 @@ void FreeWordArray(WordTab *wtab, int numWords)
 
     for (i = 0; i < numWords; i++) {
 
-        free((*wtab[i])->word);
-        free(*wtab[i]);
+        free((*wtab)[i]->word);
+        free((*wtab)[i]);
 
     }
     free(*wtab);

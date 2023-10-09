@@ -52,7 +52,7 @@ void sort(Item arr[], int l, int r, int (*less) (Item, Item))
 
     if (l >= r || l < 0) return;
     pivot = arr[r];
-
+    OP_CNT++;
     /* Temporary pivot index */
     i = l - 1;
     for (j = l ; j < r - 1; j++) {
@@ -67,13 +67,16 @@ void sort(Item arr[], int l, int r, int (*less) (Item, Item))
             tmp = arr[i];
             arr[i] = arr[j];
             arr[j] = tmp;
+            OP_CNT += 4;
         }
+        OP_CNT++;
     }
     /* Move the pivot element to the correct pivot position (between the smaller and larger elements) */
     i = i + 1;
     tmp = arr[r];
     arr[r] = arr[i];
     arr[i] = tmp;
+    OP_CNT += 4;
 
     sort(arr, l, i - 1, less); /* Left side of pivot */
     sort(arr, i + 1, r, less); /* Right side of pivot */
@@ -149,6 +152,7 @@ int main(int argc, char **argv)
     /* -- Insert code to call functions to free allocated memory -- */
 
     /*==== TODO ====*/
+    FreeWordArray(&wordtab, numWords);
 
     /* ------------------------------------------------------------ */
 
