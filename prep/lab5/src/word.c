@@ -280,7 +280,7 @@ void FreeWordArray(WordTab *wtab, int numWords)
 
 int LessAlphabetic(Item a, Item b)
 {
-    if (strcasecmp(((WordS *) a)->word, ((WordS *) b)->word) < 0)
+    if (strcasecmp(((WordS *) a)->word, ((WordS *) b)->word) <= 0)
         return 1;
     else
         return 0;
@@ -295,7 +295,7 @@ int LessAlphabetic(Item a, Item b)
 
 int LessNumUses(Item a, Item b) {
 
-    if (((WordS *) a)->numUses < ((WordS *) b)->numUses)
+    if (((WordS *) a)->numUses <= ((WordS *) b)->numUses)
         return 1;
     else
         return 0;
@@ -303,7 +303,7 @@ int LessNumUses(Item a, Item b) {
 
 int LessLength(Item a, Item b) {
 
-    if (strlen(((WordS *) a)->word) < strlen(((WordS *) b)->word))
+    if (strlen(((WordS *) a)->word) <= strlen(((WordS *) b)->word))
         return 1;
     else
         return 0;

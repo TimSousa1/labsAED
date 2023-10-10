@@ -44,7 +44,7 @@ int OP_CNT = 0;     /* global variable, to simplify complexity assessment */
  *           (*less)(Item,Item) - abstract type comparison function
  *****************************************************************************/
 
-void sort(Item arr[], int l, int r, int (*less) (Item, Item))
+void sort(Item arr[], int l, int r, int (*less) (Item, Item), enum sort_order order)
 {
     int swapped = 1;
     int i, j = 0;
@@ -53,7 +53,7 @@ void sort(Item arr[], int l, int r, int (*less) (Item, Item))
     while (swapped) {
         swapped = 0;
         for (i = r-1; i >= (l + j); i--) {
-            if (less(arr[i+1], arr[i])) {
+            if (order == ascending ? less(arr[i+1], arr[i]) : less(arr[i], arr[i+1])) {
                 tmp = arr[i];
                 arr[i] = arr[i + 1];
                 arr[i + 1] = tmp;
@@ -114,16 +114,16 @@ int main(int argc, char **argv)
     /*  Call the sorting function using as argument the
        appropriate comparison function selected by user option */
 
-    if ((criterio == alphabetic) && (sentido == ascending)) {
+    if (criterio == alphabetic) {
 
         /*==== TODO ====*/
         /* -- sort(....); -- */
-        sort((void **)wordtab, 0, numWords - 1, &LessAlphabetic);
+        sort((void **)wordtab, 0, numWords - 1, &LessAlphabetic, sentido);
 
-    } else if ((criterio == length) && (sentido == ascending)) {
-        sort((void **)wordtab, 0, numWords - 1, &LessLength);
-    } else if ((criterio == occurrences) && (sentido == ascending)) {
-        sort((void **)wordtab, 0, numWords - 1, &LessNumUses);
+    } else if (criterio == length) {
+        sort((void **)wordtab, 0, numWords - 1, &LessLength, sentido);
+    } else if (criterio == occurrences) {
+        sort((void **)wordtab, 0, numWords - 1, &LessNumUses, sentido);
     }
     /* other user options */
     /*==== TODO ====*/

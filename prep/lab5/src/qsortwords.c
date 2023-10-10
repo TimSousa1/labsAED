@@ -45,7 +45,7 @@ int OP_CNT = 0;     /* global variable, to simplify complexity assessment */
  *****************************************************************************/
 
 /* Lomuto partition scheme */
-void sort(Item arr[], int l, int r, int (*less) (Item, Item))
+void sort(Item arr[], int l, int r, int (*less) (Item, Item), enum sort_order order)
 {
     int i, j;
     Item pivot, tmp;
@@ -58,7 +58,7 @@ void sort(Item arr[], int l, int r, int (*less) (Item, Item))
     for (j = l ; j < r - 1; j++) {
 
         /* If the current element is less than or equal to the pivot */
-        if (less(arr[j], pivot)) {
+        if (order == ascending ? less(arr[j], pivot) : less(pivot, arr[j])) {
 
             /* Move the temporary pivot index forward */
             i = i + 1;
@@ -78,8 +78,8 @@ void sort(Item arr[], int l, int r, int (*less) (Item, Item))
     arr[i] = tmp;
     OP_CNT += 4;
 
-    sort(arr, l, i - 1, less); /* Left side of pivot */
-    sort(arr, i + 1, r, less); /* Right side of pivot */
+    sort(arr, l, i - 1, less, order); /* Left side of pivot */
+    sort(arr, i + 1, r, less, order); /* Right side of pivot */
 
     return;
 }
@@ -129,17 +129,16 @@ int main(int argc, char **argv)
 
     /*  Call the sorting function using as argument the
        appropriate comparison function selected by user option */
-
-    if ((criterio == alphabetic) && (sentido == ascending)) {
+    if (criterio == alphabetic) {
 
         /*==== TODO ====*/
         /* -- sort(....); -- */
-        sort((void **)wordtab, 0, numWords - 1, &LessAlphabetic);
+        sort((void **)wordtab, 0, numWords - 1, &LessAlphabetic, sentido);
 
-    } else if ((criterio == length) && (sentido == ascending)) {
-        sort((void **)wordtab, 0, numWords - 1, &LessLength);
-    } else if ((criterio == occurrences) && (sentido == ascending)) {
-        sort((void **)wordtab, 0, numWords - 1, &LessNumUses);
+    } else if (criterio == length) {
+        sort((void **)wordtab, 0, numWords - 1, &LessLength, sentido);
+    } else if (criterio == occurrences) {
+        sort((void **)wordtab, 0, numWords - 1, &LessNumUses, sentido);
     }
     /* other user options */
     /*==== TODO ====*/
