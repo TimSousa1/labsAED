@@ -55,7 +55,7 @@ void sort(Item arr[], int l, int r, int (*less) (Item, Item), enum sort_order or
     OP_CNT++;
     /* Temporary pivot index */
     i = l - 1;
-    for (j = l ; j < r - 1; j++) {
+    for (j = l ; j < r; j++) {
 
         /* If the current element is less than or equal to the pivot */
         if (order == ascending ? less(arr[j], pivot) : less(pivot, arr[j])) {
