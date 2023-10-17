@@ -45,56 +45,56 @@ void help(){
  ****************************************************************************/
 
 int main(int argc, char *argv[]){
-  Board *board, *solution;
-  int L, C, l0, c0, T;
+    Board *board, *solution;
+    int L, C, l0, c0, T;
 
-  /* deal with input arguments */
-  if (argc != 6){
-    help();
-    exit(0);
-  }
-  /* read board dimensions */
-  if(((L = atoi(argv[1])) < 1) || ((C = atoi(argv[2])) < 1)){
-    /* invalid board dimensions */
-    help();
-    exit(0);
-  }
+    /* deal with input arguments */
+    if (argc != 6){
+        help();
+        exit(0);
+    }
+    /* read board dimensions */
+    if(((L = atoi(argv[1])) < 1) || ((C = atoi(argv[2])) < 1)){
+        /* invalid board dimensions */
+        help();
+        exit(0);
+    }
 
-  /* now read initial queen position */
-  if (((l0 = atoi(argv[3])) < 0) || (l0 > L) ||
-      ((c0 = atoi(argv[4])) < 0) || (c0 > C)) {
-    /* invalid first queen coordinates */
-    help();
-    exit(0);
-  }
+    /* now read initial queen position */
+    if (((l0 = atoi(argv[3])) < 0) || (l0 > L) ||
+            ((c0 = atoi(argv[4])) < 0) || (c0 > C)) {
+        /* invalid first queen coordinates */
+        help();
+        exit(0);
+    }
 
-  /* now read how many queens we want to place */
-  if ((T = atoi(argv[5])) < 0){
-    help();
-    exit(0);
-  }
+    /* now read how many queens we want to place */
+    if ((T = atoi(argv[5])) < 0){
+        help();
+        exit(0);
+    }
 
-  /* initialize board */
-  board = initBoard(L, C);
+    /* initialize board */
+    board = initBoard(L, C);
 
-  /* try to place the remaining T-1 queens */
-  solution = DFS(board, L, C, l0, c0, T);
+    /* try to place the remaining T-1 queens */
+    solution = DFS(board, L, C, l0, c0, T);
 
-  if (solution != (Board*)NULL) {
-    printf("Success, all T queens place:\n");
-    printBoard(solution, L, C);
-    deleteBoard(solution, L, C);
-  } else {
-    printf("Unsuccessful: could not place all T queens on board\n");
-  }
+    if (solution != (Board*)NULL) {
+        printf("Success, all T queens place:\n");
+        printBoard(solution, L, C);
+        deleteBoard(solution, L, C);
+    } else {
+        printf("Unsuccessful: could not place all T queens on board\n");
+    }
 
-  /*****************************************************************
+    /*****************************************************************
 
-   COMPLETAR: de forma a que a execucao com valgrind esteja limpa 
+COMPLETAR: de forma a que a execucao com valgrind esteja limpa 
 
-   *****************************************************************/
+     *****************************************************************/
 
-  deleteBoard(board, L, C);
+    deleteBoard(board, L, C);
 
-  return 0;
+    return 0;
 }

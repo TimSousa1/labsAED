@@ -27,13 +27,13 @@
  ****************************************************************************/
 
 Board* makeBoardMove (Board *board, int L, int C, int play[], int numplay){
-  Board *newboard=NULL;
+    Board *newboard=NULL;
 
-  newboard = copyBoard(board, L, C);
-  placeQueenBoard(newboard, play, QUEEN);
-  invalidatePlay(newboard, L, C, play, numplay);
+    newboard = copyBoard(board, L, C);
+    placeQueenBoard(newboard, play, QUEEN);
+    invalidatePlay(newboard, L, C, play, numplay);
 
-  return newboard;
+    return newboard;
 }
 
 
@@ -53,27 +53,27 @@ Board* makeBoardMove (Board *board, int L, int C, int play[], int numplay){
  ****************************************************************************/
 
 int getNewBoardMove(Board *b, int L, int C, int newplay[]) {
-  int i, j, lastplay[2];
-  int success = 0;
+    int i, j, lastplay[2];
+    int success = 0;
 
-  boardLastPlay(b, lastplay);
+    boardLastPlay(b, lastplay);
 
-  for (i = lastplay[0]; i < L; i++) {
-    for (j = 0; j < C; j++) {
-      if (i == lastplay[0] && j <= lastplay[1])
-        continue;
-      if (isBoardPositionAvailable(b, i, j)) {
-        success = 1;
-        newplay[0] = i;
-        newplay[1] = j;
-        break;
-      }
+    for (i = lastplay[0]; i < L; i++) {
+        for (j = 0; j < C; j++) {
+            if (i == lastplay[0] && j <= lastplay[1])
+                continue;
+            if (isBoardPositionAvailable(b, i, j)) {
+                success = 1;
+                newplay[0] = i;
+                newplay[1] = j;
+                break;
+            }
+        }
+        if (success == 1)
+            break;
     }
-    if (success == 1)
-      break;
-  }
 
-  return success;
+    return success;
 }
 
 
@@ -95,85 +95,85 @@ int getNewBoardMove(Board *b, int L, int C, int newplay[]) {
  ****************************************************************************/
 
 Board* DFS(Board *b, int L, int C, int l0, int c0, int T) {
-  Stack *stack = createStack(T);
-  int numplay = 1;
-  Board *currentBoard;
-  int play[2] = {l0, c0};
-  int thereArePlaysToMake = 1;
+    Stack *stack = createStack(T);
+    int numplay = 1;
+    Board *currentBoard;
+    int play[2] = {l0, c0};
+    int thereArePlaysToMake = 1;
 
-  /* now do the initial play; place queen at (lo,c0) */
-  currentBoard = makeBoardMove(b, L, C, play, numplay);
-  push(stack, (Item) currentBoard);
+    /* now do the initial play; place queen at (lo,c0) */
+    currentBoard = makeBoardMove(b, L, C, play, numplay);
+    push(stack, (Item) currentBoard);
 
-  while(1) {
+    while(1) {
 
-    currentBoard = (Board*)pop(stack);
-    if (currentBoard == NULL) break;
-    /* still need to place a few more queens, assume it is possible */
-    while (1) {
+        currentBoard = (Board*)pop(stack);
+        if (currentBoard == NULL) break;
+        /* still need to place a few more queens, assume it is possible */
+        while (1) {
 
-      /* did we already place all queens */
-      if(allQueensPlaced(currentBoard, T)) { //we found the solution
-        for (; numplay > 1; numplay--) {
-          deleteBoard(pop(stack), L, C);
+            /* did we already place all queens */
+            if(allQueensPlaced(currentBoard, T)) { //we found the solution
+                for (; numplay > 1; numplay--) {
+                    deleteBoard(pop(stack), L, C);
+                }
+                deleteStack(stack);
+                return currentBoard;
+            }
+
+            /* check for potential new plays */
+            thereArePlaysToMake = getNewBoardMove(currentBoard, L, C, play);
+
+            if(thereArePlaysToMake == 0) {
+                /* there were no more plays available, but we know we are not done */
+                numplay--;
+                /* back to the previous board */
+
+                /***************************************************************************
+
+COMPLETAR: neste board não há mais jogadas possíveis, temos de voltar
+atrás e tentar outra sequência de jogadas
+mas convém deixar tudo "limpinho"
+
+                 ***************************************************************************/
+                deleteBoard(currentBoard, L, C);
+                break;
+
+            } else {
+                /* there are plays to make, should we? */
+                if(!thereisHope(currentBoard, L, C, T)){
+                    /* Don't follow this branch! No longer hope for it */
+                    numplay--;
+                    /* back to the previous board */
+
+                    /***************************************************************************
+
+COMPLETAR: neste board não há mais jogadas possíveis, temos de voltar
+atrás e tentar outra sequência de jogadas
+mas convém deixar tudo "limpinho"
+
+                     ***************************************************************************/
+                    deleteBoard(currentBoard, L, C);
+                    break;
+
+                } else {
+                    /* make the play whose info is in play[] */
+                    numplay++;
+
+                    /***************************************************************************
+
+COMPLETAR: jogada parece boa, vamos fazê-la e continuar a tentar
+
+                     ***************************************************************************/
+                    boardSetLastPlay(currentBoard, play);
+                    push(stack, (Item) currentBoard);
+                    currentBoard = makeBoardMove(currentBoard, L, C, play, numplay);
+                }
+            }
+
         }
-        deleteStack(stack);
-        return currentBoard;
-      }
-
-      /* check for potential new plays */
-      thereArePlaysToMake = getNewBoardMove(currentBoard, L, C, play);
-
-      if(thereArePlaysToMake == 0) {
-        /* there were no more plays available, but we know we are not done */
-        numplay--;
-        /* back to the previous board */
-
-  /***************************************************************************
-
-    COMPLETAR: neste board não há mais jogadas possíveis, temos de voltar
-               atrás e tentar outra sequência de jogadas
-               mas convém deixar tudo "limpinho"
-
-  ***************************************************************************/
-        deleteBoard(currentBoard, L, C);
-        break;
-
-      } else {
-        /* there are plays to make, should we? */
-        if(!thereisHope(currentBoard, L, C, T)){
-          /* Don't follow this branch! No longer hope for it */
-          numplay--;
-          /* back to the previous board */
-
-  /***************************************************************************
-
-    COMPLETAR: neste board não há mais jogadas possíveis, temos de voltar
-               atrás e tentar outra sequência de jogadas
-               mas convém deixar tudo "limpinho"
-
-  ***************************************************************************/
-          deleteBoard(currentBoard, L, C);
-          break;
-
-        } else {
-          /* make the play whose info is in play[] */
-          numplay++;
-
-  /***************************************************************************
-
-    COMPLETAR: jogada parece boa, vamos fazê-la e continuar a tentar
-
-  ***************************************************************************/
-          boardSetLastPlay(currentBoard, play);
-          push(stack, (Item) currentBoard);
-          currentBoard = makeBoardMove(currentBoard, L, C, play, numplay);
-        }
-      }
 
     }
-
-  }
-  deleteStack(stack);
-  return NULL;
+    deleteStack(stack);
+    return NULL;
 }

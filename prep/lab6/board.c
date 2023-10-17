@@ -228,36 +228,36 @@ void printBoard(Board *b, int L, int C){
  *****************************************************************************/
 
 void invalidatePlay(Board* b, int L, int C, int play[], int numplay) {
-  int i, j, line = play[0], col = play[1];
+    int i, j, line = play[0], col = play[1];
 
-  /* Mark the entire row and column as blocked */
-  for (i = 0; i < L; i++) {
-    if (b->board[i][col] == 0)
-      b->board[i][col] = -numplay; /* Mark column */
-    if (b->board[line][i] == 0)
-      b->board[line][i] = -numplay; /* Mark row */
-  }
+    /* Mark the entire row and column as blocked */
+    for (i = 0; i < L; i++) {
+        if (b->board[i][col] == 0)
+            b->board[i][col] = -numplay; /* Mark column */
+        if (b->board[line][i] == 0)
+            b->board[line][i] = -numplay; /* Mark row */
+    }
 
-  /* Mark diagonals */
-  for (i = line + 1, j = col + 1; i < L && j < C; i++, j++) {
-    if (b->board[i][j] == 0)
-      b->board[i][j] = -numplay; /* Mark bottom-right diagonal */
-  }
+    /* Mark diagonals */
+    for (i = line + 1, j = col + 1; i < L && j < C; i++, j++) {
+        if (b->board[i][j] == 0)
+            b->board[i][j] = -numplay; /* Mark bottom-right diagonal */
+    }
 
-  for (i = line - 1, j = col + 1; i >= 0 && j < C; i--, j++) {
-    if (b->board[i][j] == 0)
-      b->board[i][j] = -numplay; /* Mark bottom-right diagonal */
-  }
+    for (i = line - 1, j = col + 1; i >= 0 && j < C; i--, j++) {
+        if (b->board[i][j] == 0)
+            b->board[i][j] = -numplay; /* Mark bottom-right diagonal */
+    }
 
-  for (i = line + 1, j = col - 1; i < L && j >= 0; i++, j--) {
-    if (b->board[i][j] == 0)
-      b->board[i][j] = -numplay; /* Mark bottom-right diagonal */
-  }
+    for (i = line + 1, j = col - 1; i < L && j >= 0; i++, j--) {
+        if (b->board[i][j] == 0)
+            b->board[i][j] = -numplay; /* Mark bottom-right diagonal */
+    }
 
-  for (i = line - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-    if (b->board[i][j] == 0)
-      b->board[i][j] = -numplay; /* Mark bottom-right diagonal */
-  }
+    for (i = line - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+        if (b->board[i][j] == 0)
+            b->board[i][j] = -numplay; /* Mark bottom-right diagonal */
+    }
 }
 
 
@@ -276,7 +276,7 @@ void invalidatePlay(Board* b, int L, int C, int play[], int numplay) {
  *****************************************************************************/
 
 int isBoardPositionAvailable(Board* b, int i, int j) {
-  return(b->board[i][j] == AVAILABLE);
+    return(b->board[i][j] == AVAILABLE);
 }
 
 
@@ -305,18 +305,18 @@ int isBoardPositionAvailable(Board* b, int i, int j) {
  *****************************************************************************/
 
 int thereisHope(Board *b, int L, int C, int T){
-  int i, j;
+    int i, j;
 
-  /* Check the entire board */
-  b->ctr_free = 0;
-  for (i = 0; i < L; i++)
-    for (j = 0; j < C; j++)
-      if (b->board[i][j] == AVAILABLE)
-        b->ctr_free++;
-  if (b->ctr_free >= (T - b->queensPlaced))
-    return 1;
-  else
-    return 0;
+    /* Check the entire board */
+    b->ctr_free = 0;
+    for (i = 0; i < L; i++)
+        for (j = 0; j < C; j++)
+            if (b->board[i][j] == AVAILABLE)
+                b->ctr_free++;
+    if (b->ctr_free >= (T - b->queensPlaced))
+        return 1;
+    else
+        return 0;
 }
 
 
@@ -335,10 +335,10 @@ int thereisHope(Board *b, int L, int C, int T){
  *****************************************************************************/
 
 void  boardLastPlay(Board *b, int *curplay) {
-  curplay[0] = b->lastplay[0];
-  curplay[1] = b->lastplay[1];
+    curplay[0] = b->lastplay[0];
+    curplay[1] = b->lastplay[1];
 
-  return;
+    return;
 }
 
 
@@ -357,8 +357,8 @@ void  boardLastPlay(Board *b, int *curplay) {
  *****************************************************************************/
 
 void  boardSetLastPlay(Board *b, int *lastplay) {
-  b->lastplay[0] = lastplay[0];
-  b->lastplay[1] = lastplay[1];
+    b->lastplay[0] = lastplay[0];
+    b->lastplay[1] = lastplay[1];
 
-  return;
+    return;
 }
